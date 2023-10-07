@@ -1,16 +1,19 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 function Header(props) { // props: 속성
   return <header>
     <h1><a href="/">{props.title}</a></h1>
   </header>
 }
-function Nav() {
+function Nav(props) {
+const lis = []
+for(let i=0; i<props.topics.length; i++) {
+  let t = props.topics[i];
+  lis.push(<li>{t.title}</li>)
+}
   return <nav>
     <ol>
-      <li><a href="/read/1">html</a></li>
-      <li><a href="/read/2">css</a></li>
-      <li><a href="/read/3">js</a></li>
+      {lis}
     </ol>
   </nav>
 }
@@ -21,10 +24,15 @@ function Article(props) {
   </article>
 }
 function App() {
+  const topics = [
+    {id: 1, title: 'html', body: 'html is ...'}
+   ,{id: 2, title: 'css', body: 'css is ...'}
+   ,{id: 3, title: 'js', body: 'js is ...'}
+  ]; 
   return (
     <div>
       <Header title="REACT"/>
-      <Nav />
+      <Nav topics={topics}/>
       <Article title="Welcome" body="Hello, WEB" />
       <Article title="Welcome2" body="Hello, WEB2" />
     </div>
