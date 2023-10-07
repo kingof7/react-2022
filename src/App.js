@@ -12,7 +12,7 @@ function Header(props) { // props: 속성
   return <header>
     <h1><a href="/" onClick={(event)=>{
       event.preventDefault(); // a태그 기본동작 막음
-      props.onChangeMode();      
+      props.onChangeMode();
     }}>{props.title}</a></h1>
   </header>
 }
@@ -54,10 +54,11 @@ function App() {
   const [nextId, setNextId] = useState(4);
   const [topics, setTopics] = useState([
     {id: 1, title: 'html', body: 'html is ...'}
-   ,{id: 2, title: 'css', body: 'css is ...'}
-   ,{id: 3, title: 'js', body: 'js is ...'}
+    ,{id: 2, title: 'css', body: 'css is ...'}
+    ,{id: 3, title: 'js', body: 'js is ...'}
   ]);
   let content = null;
+  let contextControl = null;
   if(mode === 'WELCOME') {
     content = <Article title="Welcome" body="Hello, WEB" />
   }else if(mode === 'READ') {
@@ -69,6 +70,7 @@ function App() {
       }
     }
     content = <Article title={title} body={body} />
+    contextControl = <li><a href="/update">Update</a></li>
   }else if(mode === 'Create') {
     content = <Create onCreate={(_title, _body)=>{
       const newTopic = {id: nextId, title: _title, body: _body};
@@ -90,10 +92,15 @@ function App() {
         setId(_id)
       }} />
       {content}
-      <a href="/create" onClick={event=>{
-        event.preventDefault();
-        setMode('Create');
-      }}>Create</a>
+      <ul>
+        <li>
+          <a href="/create" onClick={event=>{
+            event.preventDefault();
+            setMode('Create');
+          }}>Create</a>
+          {contextControl}
+        </li>
+      </ul>
     </div>
   );
 }
