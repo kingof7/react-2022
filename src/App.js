@@ -89,20 +89,29 @@ function App() {
   if(mode === 'WELCOME') {
     content = <Article title="Welcome" body="Hello, WEB" />
   }else if(mode === 'READ') {
-    // let title, body = null;
-    // for(let i=0; i<topics.length; i++) {
-    //   if(topics[i].id === id) {
-    //     title = topics[i].title;
-    //     body = topics[i].body;
-    //   }
-    // }
-    let title = topics[id-1].title;
-    let body = topics[id-1].body;
+    let title, body = null;
+    for(let i=0; i<topics.length; i++) {
+      if(topics[i].id === id) {
+        title = topics[i].title;
+        body = topics[i].body;
+      }
+    }
     content = <Article title={title} body={body} />
-    contextControl = <li><a href={'/update/'+id} onClick={event=>{
+    contextControl = <><li><a href={'/update/'+id} onClick={event=>{
       event.preventDefault();
       setMode('UPDATE');
     }}>Update</a></li>
+    <li><input type="button" value="Delete" onClick={()=>{
+      const newTopics = [];
+      for(let i=0; i<topics.length; i++) {
+        if(topics[i].id !== id) {
+          newTopics.push(topics[i]);
+        }
+      }
+      setTopics(newTopics);
+      setMode('WELCOME');
+    }} /></li>
+    </>
   }else if(mode === 'Create') {
     content = <Create onCreate={(_title, _body)=>{
       const newTopic = {id: nextId, title: _title, body: _body};
@@ -114,18 +123,19 @@ function App() {
       setNextId(nextId + 1); // nextId에 5를 넣음
     }} />
   }else if(mode === 'UPDATE') {
-    let title = topics[id-1].title;
-    let body = topics[id-1].body;
+    // let title = topics[id-1].title;
+    // let body = topics[id-1].body;
+    let title, body = null;
     content = <Update title={title} body={body} onUpdate={(title, body)=>{
       const updatedTopic = {id: id, title: title, body: body}
       const newTopics = [...topics];
-      newTopics[id-1] = updatedTopic;
-      // for(let i=0; i<newTopics.length; i++) {
-      //   if(newTopics[i].id === id) {
-      //     newTopics[i] = updatedTopic;
-      //     break;
-      //   }
-      // }
+      // newTopics[id-1] = updatedTopic;
+      for(let i=0; i<newTopics.length; i++) {
+        if(newTopics[i].id === id) {
+          newTopics[i] = updatedTopic;
+          break;
+        }
+      }
       setTopics(newTopics);
       setMode('READ');
     }} />
